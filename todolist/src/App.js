@@ -1,25 +1,53 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import "./App.css";
 
-function App() {
+const App = () => {
+  const [input, setInput] = useState("");
+  const [todo, setTodo] = useState([]);
+
+  const submitHandler = (e) => {
+    e.preventDefault();
+    const tasks = [...todo, input];
+    setTodo(tasks);
+    setInput("");
+  };
+  const deleteHandler = (indexValue) => {
+    const newTasks = todo.filter((todo, index) => index != indexValue);
+    setTodo(newTasks);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <center>
+        <h3>Todo List</h3>
+        <form onSubmit={submitHandler}>
+          <input
+            type="text"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+          />
+          &nbsp;
+          <button type="submit" value="Add">
+            add
+          </button>
+        </form>
+        {todo.map((tasks, index) => {
+          return (
+            <div key={index}>
+              {tasks}&nbsp;
+              <button
+                onClick={() => {
+                  deleteHandler(index);
+                }}
+              >
+                Delete
+              </button>
+            </div>
+          );
+        })}
+      </center>
     </div>
   );
-}
+};
 
 export default App;
